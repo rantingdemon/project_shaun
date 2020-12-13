@@ -40,3 +40,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#other
+secrets.txt

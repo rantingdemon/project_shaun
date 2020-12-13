@@ -2,3 +2,22 @@
     alchemy
     models for flasklogin (user)
     models for configuration (simple key\value)
+
+ - flask login
+    google authentication
+
+ - configuration
+    video size
+
+ - beautifying
+    bootstrap css and style index page
+
+- security
+    ssl
+
+- hosting
+    gunicorn and nginx (https://digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-18-04)
+
+ - enhancements
+    save stream to file (i.e. camera must run the whole time)
+
