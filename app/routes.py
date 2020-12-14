@@ -1,8 +1,20 @@
+from config import Config
+from flask_login.utils import login_required
 from app import app
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, redirect, request
+import os
+from importlib import import_module
+from flask_login import login_required, LoginManager, current_user, login_user, logout_user
+
+if os.environ.get('CAMERA'):
+    Camera = import_module('camera_' + os.environ['CAMERA']).Camera
+else:
+    from camera import Camera
+
 
 
 @app.route('/')
+@login_required
 def index():
     """Video streaming home page."""
     return render_template('index.html')
@@ -21,3 +33,17 @@ def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen(Camera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/login')
+def login():
+    authorization_endpoint = Config.GOOGLE_DISCOVERY_URL
+    request_uri = client.prepare_request_uri(
+        authorization_endpoint,
+        redirect_uri=request.base_url + "/callback",
+            scope=["openid", "email", "profile"],
+        )
+    return redirect(request_uri)
+
+@app.route('/login/callback')
+def callback():
+    code = request.args.get("code")

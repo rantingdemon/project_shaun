@@ -21,3 +21,7 @@
  - enhancements
     save stream to file (i.e. camera must run the whole time)
 
+- maintenance
+   cleanup requirements.txt and dependencies
+
+   
