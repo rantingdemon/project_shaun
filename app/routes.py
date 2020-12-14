@@ -5,6 +5,7 @@ from flask import Flask, render_template, Response, redirect, request
 import os
 from importlib import import_module
 from flask_login import login_required, LoginManager, current_user, login_user, logout_user
+from oauthlib.oauth2 import WebApplicationClient
 
 if os.environ.get('CAMERA'):
     Camera = import_module('camera_' + os.environ['CAMERA']).Camera
@@ -12,6 +13,9 @@ else:
     from camera import Camera
 
 
+appConfig = Config()
+
+client = WebApplicationClient(appConfig.GOOGLE_CLIENT_ID)
 
 @app.route('/')
 @login_required
@@ -36,7 +40,8 @@ def video_feed():
 
 @app.route('/login')
 def login():
-    authorization_endpoint = Config.GOOGLE_DISCOVERY_URL
+    google_provider_cfg = appConfig .get_google_provider_cfg()
+    authorization_endpoint  = google_provider_cfg['authorization_endpoint']
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
         redirect_uri=request.base_url + "/callback",
